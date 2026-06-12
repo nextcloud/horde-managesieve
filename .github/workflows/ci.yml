@@ -5,6 +5,27 @@ on:
   pull_request:
 
 jobs:
+  psalm:
+    runs-on: ubuntu-latest
+    name: Psalm static analysis
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@85c019fd025f731a83ac9fbc1cdd9ba69d76b6e3 # v2.36.0
+        with:
+          php-version: 8.3
+          tools: composer:v2
+          coverage: none
+
+      - name: Install dependencies
+        run: COMPOSER_ROOT_VERSION=dev-master composer update --prefer-stable --prefer-dist --no-interaction --no-progress
+
+      - name: Run Psalm
+        run: composer psalm -- --threads=1 --monochrome --no-progress --output-format=github
+
   tests:
     runs-on: ubuntu-latest
 
