@@ -14,9 +14,6 @@
     <InvalidMethodCall>
       <code><![CDATA[debug]]></code>
     </InvalidMethodCall>
-    <InvalidNullableReturnType>
-      <code><![CDATA[string]]></code>
-    </InvalidNullableReturnType>
     <InvalidOperand>
       <code><![CDATA[$matches[1]]]></code>
       <code><![CDATA[$matches[1]]]></code>
@@ -31,7 +28,6 @@
     <NullableReturnStatement>
       <code><![CDATA[$this->_capability['extensions']]]></code>
       <code><![CDATA[$this->_capability['sasl']]]></code>
-      <code><![CDATA[preg_replace('/^{[0-9]+}\r\n/', '', $result)]]></code>
     </NullableReturnStatement>
     <PossiblyFalseArgument>
       <code><![CDATA[$data]]></code>
