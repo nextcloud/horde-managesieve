@@ -226,7 +226,7 @@ class ManageSieve
      *
      * @param object $logger   A log handler, must implement debug().
      */
-    public function setLogger($logger)
+    public function setLogger($logger): void
     {
         $this->_logger = $logger;
     }
@@ -236,7 +236,7 @@ class ManageSieve
      *
      * @throws \Horde\ManageSieve\Exception
      */
-    protected function _handleConnectAndLogin()
+    protected function _handleConnectAndLogin(): void
     {
         $this->connect(
             $this->_params['host'],
@@ -269,7 +269,7 @@ class ManageSieve
      */
     public function connect(
         $host = null, $port = null, $context = null, $secure = null
-    )
+    ): void
     {
         if (isset($host)) {
             $this->_params['host'] = $host;
@@ -355,7 +355,7 @@ class ManageSieve
      *
      * @throws \Horde\ManageSieve\Exception
      */
-    public function disconnect($sendLogoutCMD = true)
+    public function disconnect($sendLogoutCMD = true): void
     {
         $this->_cmdLogout($sendLogoutCMD);
     }
@@ -374,7 +374,7 @@ class ManageSieve
      */
     public function login(
         $user = null, $password = null, $authmethod = null, $euser = null
-    )
+    ): void
     {
         if (isset($user)) {
             $this->_params['user'] = $user;
@@ -436,7 +436,7 @@ class ManageSieve
      *
      * @throws \Horde\ManageSieve\Exception
      */
-    public function setActive($scriptname)
+    public function setActive($scriptname): void
     {
         $this->_cmdSetActive($scriptname);
     }
@@ -447,9 +447,8 @@ class ManageSieve
      * @param string $scriptname The name of the script to be retrieved.
      *
      * @throws \Horde\ManageSieve\Exception
-     * @return string  The script.
-    */
-    public function getScript($scriptname)
+     */
+    public function getScript($scriptname): string|null
     {
         return $this->_cmdGetScript($scriptname);
     }
@@ -463,7 +462,7 @@ class ManageSieve
      *
      * @throws \Horde\ManageSieve\Exception
      */
-    public function installScript($scriptname, $script, $makeactive = false)
+    public function installScript($scriptname, $script, $makeactive = false): void
     {
         $this->_cmdPutScript($scriptname, $script);
         if ($makeactive) {
@@ -478,7 +477,7 @@ class ManageSieve
      *
      * @throws \Horde\ManageSieve\Exception
      */
-    public function removeScript($scriptname)
+    public function removeScript($scriptname): void
     {
         $this->_cmdDeleteScript($scriptname);
     }
@@ -592,7 +591,7 @@ class ManageSieve
      */
     protected function _cmdAuthenticate(
         $uid, $pwd, $authmethod = null, $euser = ''
-    )
+    ): void
     {
         $method = $this->_getBestAuthMethod($authmethod);
 
@@ -657,7 +656,7 @@ class ManageSieve
      *
      * @throws \Horde\ManageSieve\Exception
      */
-    protected function _authLOGIN($user, $pass, $euser)
+    protected function _authLOGIN($user, $pass, $euser): void
     {
         $this->_sendCmd('AUTHENTICATE "LOGIN"');
         $this->_doCmd('"' . base64_encode($user) . '"', true);
@@ -673,7 +672,7 @@ class ManageSieve
      *
      * @throws \Horde\ManageSieve\Exception
      */
-    protected function _authCRAMMD5($user, $pass, $euser)
+    protected function _authCRAMMD5($user, $pass, $euser): void
     {
         $challenge = $this->_doCmd('AUTHENTICATE "CRAM-MD5"', true);
         $challenge = base64_decode(trim($challenge));
@@ -694,7 +693,7 @@ class ManageSieve
      *
      * @throws \Horde\ManageSieve\Exception
      */
-    protected function _authDigestMD5($user, $pass, $euser)
+    protected function _authDigestMD5($user, $pass, $euser): void
     {
         $challenge = $this->_doCmd('AUTHENTICATE "DIGEST-MD5"', true);
         $challenge = base64_decode(trim($challenge));
@@ -744,7 +743,7 @@ class ManageSieve
      *
      * @throws \Horde\ManageSieve\Exception
      */
-    protected function _cmdDeleteScript($scriptname)
+    protected function _cmdDeleteScript($scriptname): void
     {
         $this->_checkAuthenticated();
         $this->_doCmd(sprintf('DELETESCRIPT %s', $this->_escape($scriptname)));
@@ -756,9 +755,8 @@ class ManageSieve
      * @param string $scriptname Name of the script to retrieve.
      *
      * @throws \Horde\ManageSieve\Exception
-     * @return string  The script.
      */
-    protected function _cmdGetScript($scriptname)
+    protected function _cmdGetScript($scriptname): string|null
     {
         $this->_checkAuthenticated();
         $result = $this->_doCmd(
@@ -775,7 +773,7 @@ class ManageSieve
      *
      * @throws \Horde\ManageSieve\Exception
      */
-    protected function _cmdSetActive($scriptname)
+    protected function _cmdSetActive($scriptname): void
     {
         $this->_checkAuthenticated();
         $this->_doCmd(sprintf('SETACTIVE %s', $this->_escape($scriptname)));
@@ -818,7 +816,7 @@ class ManageSieve
      *
      * @throws \Horde\ManageSieve\Exception
      */
-    protected function _cmdPutScript($scriptname, $scriptdata)
+    protected function _cmdPutScript($scriptname, $scriptdata): void
     {
         $this->_checkAuthenticated();
         $command = sprintf(
@@ -838,7 +836,7 @@ class ManageSieve
      *
      * @throws \Horde\ManageSieve\Exception
      */
-    protected function _cmdLogout($sendLogoutCMD = true)
+    protected function _cmdLogout($sendLogoutCMD = true): void
     {
         $this->_checkConnected();
         if ($sendLogoutCMD) {
@@ -853,7 +851,7 @@ class ManageSieve
      *
      * @throws \Horde\ManageSieve\Exception
      */
-    protected function _cmdCapability()
+    protected function _cmdCapability(): void
     {
         $this->_checkConnected();
         $result = $this->_doCmd('CAPABILITY');
@@ -866,7 +864,7 @@ class ManageSieve
      *
      * @param string $data The response from the capability command.
      */
-    protected function _parseCapability($data)
+    protected function _parseCapability($data): void
     {
         // Clear the cached capabilities.
         $this->_capability = array(
@@ -910,7 +908,7 @@ class ManageSieve
      *
      * @param string $cmd The command to send.
      */
-    protected function _sendCmd($cmd)
+    protected function _sendCmd($cmd): void
     {
         $status = $this->_sock->getStatus();
         if ($status['eof']) {
@@ -1120,7 +1118,7 @@ class ManageSieve
      *
      * @throws \Horde\ManageSieve\Exception
      */
-    protected function _checkConnected()
+    protected function _checkConnected(): void
     {
         if (self::STATE_DISCONNECTED == $this->_state) {
             throw new Exception\NotConnected();
@@ -1132,7 +1130,7 @@ class ManageSieve
      *
      * @throws \Horde\ManageSieve\Exception
      */
-    protected function _checkAuthenticated()
+    protected function _checkAuthenticated(): void
     {
         if (self::STATE_AUTHENTICATED != $this->_state) {
             throw new Exception\NotAuthenticated();
@@ -1162,7 +1160,7 @@ class ManageSieve
      *
      * @param string $message  Debug message text.
      */
-    protected function _debug($message)
+    protected function _debug($message): void
     {
         if ($this->_logger) {
             $this->_logger->debug($message);
